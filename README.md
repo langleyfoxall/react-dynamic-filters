@@ -21,72 +21,64 @@ npm install
 See the following usage example.
 
 ```jsx
-import React from "react";
-import ReactDOM from "react-dom";
-import DynamicFilters from "@langleyfoxall/react-dynamic-filters";
-
-const reactDynamicFilters = document.getElementById('react-dynamic-filters');
-
-ReactDOM.render(
-    <DynamicFilters
-        fields={{
-            'name': 'Name',
-            'status': 'Status',
-            'id': 'ID',
-            'email': 'Email address',
-            'website': 'Website (URL)',
-            'created_at': 'Created date',
-            'last_logged_in': 'Last logged in',
-            'preferred_contact_time': 'Preferred contact time',
-            'approved': 'Product approved',
-            'mouse_position': 'Mouse position',
-        }}
-        operators={{
-            'approved': [],
-            'mouse_position': ['is', 'is not'],
-        }}
-        types={{
-            'status': 'dropdown',
-            'id': 'number',
-            'email': 'email',
-            'website': 'url',
-            'created_at': 'date',
-            'last_logged_in': 'datetime',
-            'preferred_contact_time': 'time',
-            'approved': 'dropdown',
-        }}
-        values={{
-            'status': {
-                'open': 'Open',
-                'closed': 'Closed',
-            },
-            'approved': {
-                '1': 'Yes',
-                '0': 'No',
-            }
-        }}
-        customValueRenderers={{
-            'mouse_position': (filter, updateFilter) => {
-                return (
-                    <div
-                        style={{ width: '200px', height: '200px', border: '1px solid '+(filter.operator === 'is not' ? '#ff0000' : '#ccc') }}
-                        onMouseMove={(e) => {
-                            updateFilter(filter.id, {value: e.clientX + ', ' + e.clientY})
-                        }}
-                    >
-                        {filter.value}
-                    </div>
-                );
-            }
-        }}
-        onChange={(filters) => {
-            console.clear();
-            console.log('Filters changed:');
-            filters.forEach((filter) => {
-                const { field, operator, value } = filter;
-                console.log('* '+field + ' ' + operator + ' ' + value);
-            });
-        }}
-    />,
-    reactDynamicFilters);
+<DynamicFilters
+    fields={{
+        'name': 'Name',
+        'status': 'Status',
+        'id': 'ID',
+        'email': 'Email address',
+        'website': 'Website (URL)',
+        'created_at': 'Created date',
+        'last_logged_in': 'Last logged in',
+        'preferred_contact_time': 'Preferred contact time',
+        'approved': 'Product approved',
+        'mouse_position': 'Mouse position',
+    }}
+    operators={{
+        'approved': [],
+        'mouse_position': ['is', 'is not'],
+    }}
+    types={{
+        'status': 'dropdown',
+        'id': 'number',
+        'email': 'email',
+        'website': 'url',
+        'created_at': 'date',
+        'last_logged_in': 'datetime',
+        'preferred_contact_time': 'time',
+        'approved': 'dropdown',
+    }}
+    values={{
+        'status': {
+            'open': 'Open',
+            'closed': 'Closed',
+        },
+        'approved': {
+            '1': 'Yes',
+            '0': 'No',
+        }
+    }}
+    customValueRenderers={{
+        'mouse_position': (filter, updateFilter) => {
+            return (
+                <div
+                    style={{ width: '200px', height: '200px', border: '1px solid '+(filter.operator === 'is not' ? '#ff0000' : '#ccc') }}
+                    onMouseMove={(e) => {
+                        updateFilter(filter.id, {value: e.clientX + ', ' + e.clientY})
+                    }}
+                >
+                    {filter.value}
+                </div>
+            );
+        }
+    }}
+    onChange={(filters) => {
+        console.clear();
+        console.log('Filters changed:');
+        filters.forEach((filter) => {
+            const { field, operator, value } = filter;
+            console.log('* '+field + ' ' + operator + ' ' + value);
+        });
+    }}
+/>
 ```
