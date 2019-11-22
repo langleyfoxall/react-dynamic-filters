@@ -172,7 +172,6 @@ class DynamicFilters extends Component {
                         <option
                             key={field}
                             value={field}
-                            selected={filter.field === field}
                         >
                             { field }
                         </option>

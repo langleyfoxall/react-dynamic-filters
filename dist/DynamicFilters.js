@@ -225,8 +225,7 @@ function (_Component) {
       }, fields.map(function (field) {
         return _react["default"].createElement("option", {
           key: field,
-          value: field,
-          selected: filter.field === field
+          value: field
         }, field);
       }));
     }
