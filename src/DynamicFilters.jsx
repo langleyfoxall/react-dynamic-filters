@@ -30,7 +30,9 @@ class DynamicFilters extends Component {
             type: this.getTypeOfField(field),
         });
 
-        this.setState({ filters });
+        this.setState({ filters }, () => {
+            this.triggerOnChangeCallback();
+        });
     }
 
     updateFilter(filterId, updatedData) {
@@ -45,10 +47,12 @@ class DynamicFilters extends Component {
             }
         }
 
-        this.setState({ filters });
+        this.setState({ filters }, () => {
+            this.triggerOnChangeCallback();
+        });
     }
 
-    removeFilter(filterId, updatedData) {
+    removeFilter(filterId) {
         let { filters } = this.state;
 
         for (let i = 0; i < filters.length; i++) {
@@ -59,7 +63,21 @@ class DynamicFilters extends Component {
             }
         }
 
-        this.setState({ filters });
+        this.setState({ filters }, () => {
+            this.triggerOnChangeCallback();
+        });
+    }
+
+    triggerOnChangeCallback() {
+        const { onChange } = this.props;
+        const { filters } = this.state;
+
+        const data = filters.map((filter) => {
+            const { field, operator, value } = filter;
+            return { field, operator, value };
+        });
+
+        onChange(data);
     }
 
     getDefaultOperatorForField(field) {
@@ -291,7 +309,7 @@ class DynamicFilters extends Component {
 }
 
 DynamicFilters.propTypes = {
-    fields: PropTypes.objectOf(PropTypes.PropTypes.objectOf(PropTypes.string)),
+    fields: PropTypes.objectOf(PropTypes.string).isRequired,
     operators: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)),
     values: PropTypes.objectOf(PropTypes.PropTypes.objectOf(PropTypes.string)),
     types: PropTypes.objectOf(PropTypes.PropTypes.string),

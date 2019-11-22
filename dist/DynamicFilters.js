@@ -85,6 +85,8 @@ function (_Component) {
   }, {
     key: "addFilter",
     value: function addFilter() {
+      var _this2 = this;
+
       var fields = this.props.fields;
       var filters = this.state.filters;
       var field = Object.keys(fields)[0];
@@ -97,11 +99,15 @@ function (_Component) {
       });
       this.setState({
         filters: filters
+      }, function () {
+        _this2.triggerOnChangeCallback();
       });
     }
   }, {
     key: "updateFilter",
     value: function updateFilter(filterId, updatedData) {
+      var _this3 = this;
+
       var filters = this.state.filters;
 
       for (var i = 0; i < filters.length; i++) {
@@ -115,11 +121,15 @@ function (_Component) {
 
       this.setState({
         filters: filters
+      }, function () {
+        _this3.triggerOnChangeCallback();
       });
     }
   }, {
     key: "removeFilter",
-    value: function removeFilter(filterId, updatedData) {
+    value: function removeFilter(filterId) {
+      var _this4 = this;
+
       var filters = this.state.filters;
 
       for (var i = 0; i < filters.length; i++) {
@@ -133,7 +143,26 @@ function (_Component) {
 
       this.setState({
         filters: filters
+      }, function () {
+        _this4.triggerOnChangeCallback();
       });
+    }
+  }, {
+    key: "triggerOnChangeCallback",
+    value: function triggerOnChangeCallback() {
+      var onChange = this.props.onChange;
+      var filters = this.state.filters;
+      var data = filters.map(function (filter) {
+        var field = filter.field,
+            operator = filter.operator,
+            value = filter.value;
+        return {
+          field: field,
+          operator: operator,
+          value: value
+        };
+      });
+      onChange(data);
     }
   }, {
     key: "getDefaultOperatorForField",
@@ -200,7 +229,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this5 = this;
 
       var filters = this.state.filters;
       return _react["default"].createElement("div", {
@@ -208,7 +237,7 @@ function (_Component) {
       }, _react["default"].createElement("table", {
         className: "table"
       }, _react["default"].createElement("tbody", null, filters.map(function (filter) {
-        return _this2.renderFilterRow(filter);
+        return _this5.renderFilterRow(filter);
       }), this.renderAddFilterRow())));
     }
   }, {
@@ -227,7 +256,7 @@ function (_Component) {
   }, {
     key: "renderFilterRow",
     value: function renderFilterRow(filter) {
-      var _this3 = this;
+      var _this6 = this;
 
       return _react["default"].createElement("tr", {
         key: filter.id
@@ -236,14 +265,14 @@ function (_Component) {
       }, _react["default"].createElement("div", {
         className: "btn btn-secondary btn-remove-filter",
         onClick: function onClick() {
-          _this3.removeFilter(filter.id);
+          _this6.removeFilter(filter.id);
         }
       }, "-")));
     }
   }, {
     key: "renderFieldsDropdown",
     value: function renderFieldsDropdown(filter) {
-      var _this4 = this;
+      var _this7 = this;
 
       var fields = this.props.fields;
       return _react["default"].createElement("select", {
@@ -252,11 +281,11 @@ function (_Component) {
         onChange: function onChange(e) {
           var field = e.target.value;
 
-          _this4.updateFilter(filter.id, {
+          _this7.updateFilter(filter.id, {
             field: field,
-            operator: _this4.getDefaultOperatorForField(field),
-            value: _this4.getDefaultValueForField(field),
-            type: _this4.getTypeOfField(field)
+            operator: _this7.getDefaultOperatorForField(field),
+            value: _this7.getDefaultValueForField(field),
+            type: _this7.getTypeOfField(field)
           });
         }
       }, Object.keys(fields).map(function (key) {
@@ -270,13 +299,13 @@ function (_Component) {
   }, {
     key: "renderOperatorsDropdown",
     value: function renderOperatorsDropdown(filter) {
-      var _this5 = this;
+      var _this8 = this;
 
       return _react["default"].createElement("select", {
         value: filter.operator,
         className: "form-control",
         onChange: function onChange(e) {
-          _this5.updateFilter(filter.id, {
+          _this8.updateFilter(filter.id, {
             operator: e.target.value
           });
         }
@@ -290,7 +319,7 @@ function (_Component) {
   }, {
     key: "renderValueInput",
     value: function renderValueInput(filter) {
-      var _this6 = this;
+      var _this9 = this;
 
       switch (filter.type) {
         case 'text':
@@ -311,7 +340,7 @@ function (_Component) {
             value: filter.value,
             className: "form-control",
             onChange: function onChange(e) {
-              _this6.updateFilter(filter.id, {
+              _this9.updateFilter(filter.id, {
                 value: e.target.value
               });
             }
@@ -323,7 +352,7 @@ function (_Component) {
             value: filter.value,
             className: "form-control",
             onChange: function onChange(e) {
-              _this6.updateFilter(filter.id, {
+              _this9.updateFilter(filter.id, {
                 value: e.target.value
               });
             }
@@ -342,7 +371,7 @@ function (_Component) {
 }(_react.Component);
 
 DynamicFilters.propTypes = {
-  fields: _propTypes["default"].objectOf(_propTypes["default"].PropTypes.objectOf(_propTypes["default"].string)),
+  fields: _propTypes["default"].objectOf(_propTypes["default"].string).isRequired,
   operators: _propTypes["default"].objectOf(_propTypes["default"].arrayOf(_propTypes["default"].string)),
   values: _propTypes["default"].objectOf(_propTypes["default"].PropTypes.objectOf(_propTypes["default"].string)),
   types: _propTypes["default"].objectOf(_propTypes["default"].PropTypes.string),
