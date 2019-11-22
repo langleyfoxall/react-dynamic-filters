@@ -27,6 +27,8 @@ require("core-js/modules/es6.array.iterator");
 
 require("core-js/modules/es6.object.to-string");
 
+require("core-js/modules/es6.object.keys");
+
 require("core-js/modules/es6.object.assign");
 
 require("core-js/modules/es6.function.bind");
@@ -86,17 +88,12 @@ function (_Component) {
       var fields = this.props.fields;
       var filters = this.state.filters;
       var field = fields[0];
-      var fieldOperators = this.getOperatorsForField(field);
-      var fieldOperator = fieldOperators[0];
-      var fieldValues = this.getValuesForField(field);
-      var fieldValue = fieldValues ? fieldValues[0] : '';
-      var fieldType = this.getTypeOfField(field);
       filters.push({
         id: this.nextFilterId(),
         field: field,
-        operator: fieldOperator,
-        value: fieldValue,
-        type: fieldType
+        operator: this.getDefaultOperatorForField(field),
+        value: this.getDefaultValueForField(field),
+        type: this.getTypeOfField(field)
       });
       this.setState({
         filters: filters
@@ -139,6 +136,19 @@ function (_Component) {
       });
     }
   }, {
+    key: "getDefaultOperatorForField",
+    value: function getDefaultOperatorForField(field) {
+      var fieldOperators = this.getOperatorsForField(field);
+      return fieldOperators[0];
+    }
+  }, {
+    key: "getDefaultValueForField",
+    value: function getDefaultValueForField(field) {
+      var fieldValues = this.getValuesForField(field);
+      var keys = Object.keys(fieldValues);
+      return keys.length ? fieldValues[keys[0]] : '';
+    }
+  }, {
     key: "getOperatorsForField",
     value: function getOperatorsForField(field) {
       var operators = this.props.operators;
@@ -148,7 +158,7 @@ function (_Component) {
     key: "getValuesForField",
     value: function getValuesForField(field) {
       var values = this.props.values;
-      return values[field] ? values[field] : [''];
+      return values[field] ? values[field] : {};
     }
   }, {
     key: "getTypeOfField",
@@ -189,9 +199,10 @@ function (_Component) {
   }, {
     key: "renderAddFilterRow",
     value: function renderAddFilterRow() {
+      var filters = this.state.filters;
       return _react["default"].createElement("tr", null, _react["default"].createElement("td", {
         colSpan: 3
-      }, "\xA0"), _react["default"].createElement("td", {
+      }, (!filters.length ? 'No ' : filters.length) + ' ' + (filters.length === 1 ? 'filter' : 'filters') + ' applied'), _react["default"].createElement("td", {
         className: "text-right"
       }, _react["default"].createElement("div", {
         className: "btn btn-primary btn-add-filter",
@@ -224,8 +235,13 @@ function (_Component) {
         value: filter.field,
         className: "form-control",
         onChange: function onChange(e) {
+          var field = e.target.value;
+
           _this4.updateFilter(filter.id, {
-            field: e.target.value
+            field: field,
+            operator: _this4.getDefaultOperatorForField(field),
+            value: _this4.getDefaultValueForField(field),
+            type: _this4.getTypeOfField(field)
           });
         }
       }, fields.map(function (field) {
@@ -271,6 +287,24 @@ function (_Component) {
               });
             }
           });
+
+        case 'dropdown':
+          var values = this.getValuesForField(filter.field);
+          return _react["default"].createElement("select", {
+            value: filter.value,
+            className: "form-control",
+            onChange: function onChange(e) {
+              _this6.updateFilter(filter.id, {
+                value: e.target.value
+              });
+            }
+          }, Object.keys(values).map(function (key) {
+            var value = values[key];
+            return _react["default"].createElement("option", {
+              key: key,
+              value: key
+            }, value);
+          }));
       }
     }
   }]);

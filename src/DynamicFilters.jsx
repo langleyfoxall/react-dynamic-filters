@@ -22,20 +22,12 @@ class DynamicFilters extends Component {
 
         const field = fields[0];
 
-        const fieldOperators = this.getOperatorsForField(field);
-        const fieldOperator = fieldOperators[0];
-
-        const fieldValues = this.getValuesForField(field);
-        const fieldValue = fieldValues ? fieldValues[0] : '';
-
-        const fieldType = this.getTypeOfField(field);
-
         filters.push({
             id: this.nextFilterId(),
             field: field,
-            operator: fieldOperator,
-            value: fieldValue,
-            type: fieldType,
+            operator: this.getDefaultOperatorForField(field),
+            value: this.getDefaultValueForField(field),
+            type: this.getTypeOfField(field),
         });
 
         this.setState({ filters });
@@ -46,6 +38,7 @@ class DynamicFilters extends Component {
 
         for (let i = 0; i < filters.length; i++) {
             const filter = filters[i];
+
             if (filter.id === filterId) {
                 filters[i] = Object.assign(filter, updatedData);
                 break;
@@ -69,6 +62,17 @@ class DynamicFilters extends Component {
         this.setState({ filters });
     }
 
+    getDefaultOperatorForField(field) {
+        const fieldOperators = this.getOperatorsForField(field);
+        return fieldOperators[0];
+    }
+
+    getDefaultValueForField(field) {
+        const fieldValues = this.getValuesForField(field);
+        const keys = Object.keys(fieldValues);
+        return keys.length ? fieldValues[keys[0]] : '';
+    }
+
     getOperatorsForField(field) {
         const { operators } = this.props;
         return operators[field] ? operators[field] : ['='];
@@ -76,7 +80,7 @@ class DynamicFilters extends Component {
 
     getValuesForField(field) {
         const { values } = this.props;
-        return values[field] ? values[field] : [''];
+        return values[field] ? values[field] : {};
     }
 
     getTypeOfField(field) {
@@ -117,9 +121,13 @@ class DynamicFilters extends Component {
     }
 
     renderAddFilterRow() {
+        const { filters } = this.state;
+
         return (
             <tr>
-                <td colSpan={3}>&nbsp;</td>
+                <td colSpan={3}>
+                    { (!filters.length ? 'No ' : filters.length) + ' ' + (filters.length === 1 ? 'filter' : 'filters') + ' applied' }
+                </td>
                 <td className={"text-right"}>
                     <div
                         className={"btn btn-primary btn-add-filter"}
@@ -164,7 +172,14 @@ class DynamicFilters extends Component {
                 value={filter.field}
                 className={"form-control"}
                 onChange={(e) => {
-                    this.updateFilter(filter.id, {field: e.target.value})
+                    const field = e.target.value;
+                    this.updateFilter(filter.id, {
+                        field,
+                        operator: this.getDefaultOperatorForField(field),
+                        value: this.getDefaultValueForField(field),
+                        type: this.getTypeOfField(field)
+                    })
+
                 }}
             >
                 { fields.map((field) => {
@@ -215,6 +230,30 @@ class DynamicFilters extends Component {
                             this.updateFilter(filter.id, {value: e.target.value})
                         }}
                     />
+                );
+
+            case 'dropdown':
+                const values = this.getValuesForField(filter.field);
+                return (
+                    <select
+                        value={filter.value}
+                        className={"form-control"}
+                        onChange={(e) => {
+                            this.updateFilter(filter.id, {value: e.target.value})
+                        }}
+                    >
+                        { Object.keys(values).map((key) => {
+                            const value = values[key];
+                            return (
+                                <option
+                                    key={key}
+                                    value={key}
+                                >
+                                    { value }
+                                </option>
+                            )
+                        })}
+                    </select>
                 )
         }
     }
