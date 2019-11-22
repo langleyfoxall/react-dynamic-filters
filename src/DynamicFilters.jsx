@@ -160,7 +160,7 @@ class DynamicFilters extends Component {
         const { filters } = this.state;
 
         return (
-            <tr>
+            <tr className={"rdf-add-filter-row"}>
                 <td colSpan={3} className={"rdf-filters-count-cell"}>
                     { (!filters.length ? 'No ' : filters.length) + ' ' + (filters.length === 1 ? 'filter' : 'filters') + ' applied' }
                 </td>

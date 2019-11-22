@@ -248,7 +248,9 @@ function (_Component) {
     key: "renderAddFilterRow",
     value: function renderAddFilterRow() {
       var filters = this.state.filters;
-      return _react["default"].createElement("tr", null, _react["default"].createElement("td", {
+      return _react["default"].createElement("tr", {
+        className: "rdf-add-filter-row"
+      }, _react["default"].createElement("td", {
         colSpan: 3,
         className: "rdf-filters-count-cell"
       }, (!filters.length ? 'No ' : filters.length) + ' ' + (filters.length === 1 ? 'filter' : 'filters') + ' applied'), _react["default"].createElement("td", {
