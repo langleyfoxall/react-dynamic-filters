@@ -1,0 +1,42 @@
+{
+  "name": "@langleyfoxall/react-dynamic-filters",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Re-usable React filtering system for use with data tables.",
+  "keywords": [
+    "react",
+    "filtering",
+    "filters",
+    "data filtering"
+  ],
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"No tests.\" && exit 0",
+    "build": "babel src/ --out-dir dist/",
+    "watch": "babel --watch src/ --out-dir dist/",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/langleyfoxall/react-dynamic-filters.git"
+  },
+  "author": "Jordan Hall <jordan@langleyfoxall.co.uk>",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/langleyfoxall/react-dynamic-filters/issues"
+  },
+  "homepage": "https://github.com/langleyfoxall/react-dynamic-filters#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.7.0",
+    "@babel/core": "^7.7.2",
+    "@babel/preset-env": "^7.7.1",
+    "@babel/preset-react": "^7.7.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "prop-types": "^15.6.2"
+  },
+  "dependencies": {
+    "core-js": "^2.6.10",
+    "prop-types": "^15.7.2"
+  }
+}
