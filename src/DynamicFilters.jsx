@@ -143,8 +143,8 @@ class DynamicFilters extends Component {
         const { filters } = this.state;
 
         return (
-            <div className={"dynamic-filters-container table-responsive"}>
-                <table className={"table"}>
+            <div className={"rdf-container table-responsive"}>
+                <table className={"rdf-table table"}>
                     <tbody>
                         { filters.map((filter) => {
                             return this.renderFilterRow(filter);
@@ -161,10 +161,10 @@ class DynamicFilters extends Component {
 
         return (
             <tr>
-                <td colSpan={3}>
+                <td colSpan={3} className={"rdf-filters-count-cell"}>
                     { (!filters.length ? 'No ' : filters.length) + ' ' + (filters.length === 1 ? 'filter' : 'filters') + ' applied' }
                 </td>
-                <td className={"text-right"}>
+                <td className={"rdf-btn-cell text-right"}>
                     <div
                         className={"btn btn-primary btn-add-filter"}
                         onClick={this.addFilter}
@@ -178,19 +178,19 @@ class DynamicFilters extends Component {
 
     renderFilterRow(filter) {
         return (
-            <tr key={filter.id}>
-                <td>
+            <tr key={filter.id} className={"filter-row"}>
+                <td className={"rdf-fields-cell"}>
                     { this.renderFieldsDropdown(filter) }
                 </td>
-                <td>
+                <td className={"rdf-operators-cell"}>
                     { this.renderOperatorsDropdown(filter) }
                 </td>
-                <td>
+                <td className={"rdf-value-cell"}>
                     { this.renderValueInput(filter) }
                 </td>
-                <td className={"text-right"}>
+                <td className={"rdf-btn-cell text-right"}>
                     <div
-                        className={"btn btn-secondary btn-remove-filter"}
+                        className={"rdf-btn-remove-filter btn btn-secondary"}
                         onClick={() => { this.removeFilter(filter.id) }}
                     >
                         -
@@ -206,7 +206,7 @@ class DynamicFilters extends Component {
         return (
             <select
                 value={filter.field}
-                className={"form-control"}
+                className={"rdf-fields-dropdown form-control"}
                 onChange={(e) => {
                     const field = e.target.value;
                     this.updateFilter(filter.id, {
@@ -243,7 +243,7 @@ class DynamicFilters extends Component {
         return (
             <select
                 value={filter.operator}
-                className={"form-control"}
+                className={"rdf-operators-dropdown form-control"}
                 onChange={(e) => {
                     this.updateFilter(filter.id, {operator: e.target.value})
                 }}
@@ -287,7 +287,7 @@ class DynamicFilters extends Component {
                     <input
                         type={inputType}
                         value={filter.value}
-                        className={"form-control"}
+                        className={"rdf-value-input form-control"}
                         onChange={(e) => {
                             this.updateFilter(filter.id, {value: e.target.value})
                         }}
@@ -299,7 +299,7 @@ class DynamicFilters extends Component {
                 return (
                     <select
                         value={filter.value}
-                        className={"form-control"}
+                        className={"rdf-value-dropdown form-control"}
                         onChange={(e) => {
                             this.updateFilter(filter.id, {value: e.target.value})
                         }}

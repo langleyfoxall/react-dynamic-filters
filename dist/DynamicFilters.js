@@ -237,9 +237,9 @@ function (_Component) {
 
       var filters = this.state.filters;
       return _react["default"].createElement("div", {
-        className: "dynamic-filters-container table-responsive"
+        className: "rdf-container table-responsive"
       }, _react["default"].createElement("table", {
-        className: "table"
+        className: "rdf-table table"
       }, _react["default"].createElement("tbody", null, filters.map(function (filter) {
         return _this5.renderFilterRow(filter);
       }), this.renderAddFilterRow())));
@@ -249,9 +249,10 @@ function (_Component) {
     value: function renderAddFilterRow() {
       var filters = this.state.filters;
       return _react["default"].createElement("tr", null, _react["default"].createElement("td", {
-        colSpan: 3
+        colSpan: 3,
+        className: "rdf-filters-count-cell"
       }, (!filters.length ? 'No ' : filters.length) + ' ' + (filters.length === 1 ? 'filter' : 'filters') + ' applied'), _react["default"].createElement("td", {
-        className: "text-right"
+        className: "rdf-btn-cell text-right"
       }, _react["default"].createElement("div", {
         className: "btn btn-primary btn-add-filter",
         onClick: this.addFilter
@@ -263,11 +264,18 @@ function (_Component) {
       var _this6 = this;
 
       return _react["default"].createElement("tr", {
-        key: filter.id
-      }, _react["default"].createElement("td", null, this.renderFieldsDropdown(filter)), _react["default"].createElement("td", null, this.renderOperatorsDropdown(filter)), _react["default"].createElement("td", null, this.renderValueInput(filter)), _react["default"].createElement("td", {
-        className: "text-right"
+        key: filter.id,
+        className: "filter-row"
+      }, _react["default"].createElement("td", {
+        className: "rdf-fields-cell"
+      }, this.renderFieldsDropdown(filter)), _react["default"].createElement("td", {
+        className: "rdf-operators-cell"
+      }, this.renderOperatorsDropdown(filter)), _react["default"].createElement("td", {
+        className: "rdf-value-cell"
+      }, this.renderValueInput(filter)), _react["default"].createElement("td", {
+        className: "rdf-btn-cell text-right"
       }, _react["default"].createElement("div", {
-        className: "btn btn-secondary btn-remove-filter",
+        className: "rdf-btn-remove-filter btn btn-secondary",
         onClick: function onClick() {
           _this6.removeFilter(filter.id);
         }
@@ -281,7 +289,7 @@ function (_Component) {
       var fields = this.props.fields;
       return _react["default"].createElement("select", {
         value: filter.field,
-        className: "form-control",
+        className: "rdf-fields-dropdown form-control",
         onChange: function onChange(e) {
           var field = e.target.value;
 
@@ -313,7 +321,7 @@ function (_Component) {
 
       return _react["default"].createElement("select", {
         value: filter.operator,
-        className: "form-control",
+        className: "rdf-operators-dropdown form-control",
         onChange: function onChange(e) {
           _this8.updateFilter(filter.id, {
             operator: e.target.value
@@ -354,7 +362,7 @@ function (_Component) {
           return _react["default"].createElement("input", {
             type: inputType,
             value: filter.value,
-            className: "form-control",
+            className: "rdf-value-input form-control",
             onChange: function onChange(e) {
               _this9.updateFilter(filter.id, {
                 value: e.target.value
@@ -366,7 +374,7 @@ function (_Component) {
           var values = this.getValuesForField(filter.field);
           return _react["default"].createElement("select", {
             value: filter.value,
-            className: "form-control",
+            className: "rdf-value-dropdown form-control",
             onChange: function onChange(e) {
               _this9.updateFilter(filter.id, {
                 value: e.target.value
