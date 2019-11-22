@@ -6,7 +6,7 @@ To install React Dynamic Filters, add the following to the
 `dependencies` section of your `package.json` file.
 
 ```
-"@langleyfoxall/react-dynamic-filters": "git@github.com:langleyfoxall/react-dynamic-filters.git"
+"@langleyfoxall/react-dynamic-filters": "git@github.com:langleyfoxall/react-dynamic-filters.git#v1.0.0"
 ```
 
 Now simply run the following command from the root of your
