@@ -122,10 +122,10 @@ class DynamicFilters extends Component {
                 <td colSpan={3}>&nbsp;</td>
                 <td>
                     <div
-                        className={"btn btn-primary btn-remove-filter"}
+                        className={"btn btn-primary btn-add-filter"}
                         onClick={this.addFilter}
                     >
-                        +
+                        + Filter
                     </div>
                 </td>
             </tr>

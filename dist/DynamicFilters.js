@@ -190,9 +190,9 @@ function (_Component) {
       return _react["default"].createElement("tr", null, _react["default"].createElement("td", {
         colSpan: 3
       }, "\xA0"), _react["default"].createElement("td", null, _react["default"].createElement("div", {
-        className: "btn btn-primary btn-remove-filter",
+        className: "btn btn-primary btn-add-filter",
         onClick: this.addFilter
-      }, "+")));
+      }, "+ Filter")));
     }
   }, {
     key: "renderFilterRow",
