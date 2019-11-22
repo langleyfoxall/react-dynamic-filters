@@ -103,8 +103,8 @@ class DynamicFilters extends Component {
         const { filters } = this.state;
 
         return (
-            <div className={"dynamic-filters-container"}>
-                <table>
+            <div className={"dynamic-filters-container table-responsive"}>
+                <table className={"table"}>
                     <tbody>
                         { filters.map((filter) => {
                             return this.renderFilterRow(filter);
@@ -120,7 +120,7 @@ class DynamicFilters extends Component {
         return (
             <tr>
                 <td colSpan={3}>&nbsp;</td>
-                <td>
+                <td className={"text-right"}>
                     <div
                         className={"btn btn-primary btn-add-filter"}
                         onClick={this.addFilter}
@@ -144,7 +144,7 @@ class DynamicFilters extends Component {
                 <td>
                     { this.renderValueInput(filter) }
                 </td>
-                <td>
+                <td className={"text-right"}>
                     <div
                         className={"btn btn-secondary btn-remove-filter"}
                         onClick={() => { this.removeFilter(filter.id) }}

@@ -179,8 +179,10 @@ function (_Component) {
 
       var filters = this.state.filters;
       return _react["default"].createElement("div", {
-        className: "dynamic-filters-container"
-      }, _react["default"].createElement("table", null, _react["default"].createElement("tbody", null, filters.map(function (filter) {
+        className: "dynamic-filters-container table-responsive"
+      }, _react["default"].createElement("table", {
+        className: "table"
+      }, _react["default"].createElement("tbody", null, filters.map(function (filter) {
         return _this2.renderFilterRow(filter);
       }), this.renderAddFilterRow())));
     }
@@ -189,7 +191,9 @@ function (_Component) {
     value: function renderAddFilterRow() {
       return _react["default"].createElement("tr", null, _react["default"].createElement("td", {
         colSpan: 3
-      }, "\xA0"), _react["default"].createElement("td", null, _react["default"].createElement("div", {
+      }, "\xA0"), _react["default"].createElement("td", {
+        className: "text-right"
+      }, _react["default"].createElement("div", {
         className: "btn btn-primary btn-add-filter",
         onClick: this.addFilter
       }, "+ Filter")));
@@ -201,7 +205,9 @@ function (_Component) {
 
       return _react["default"].createElement("tr", {
         key: filter.id
-      }, _react["default"].createElement("td", null, this.renderFieldsDropdown(filter)), _react["default"].createElement("td", null, this.renderOperatorsDropdown(filter)), _react["default"].createElement("td", null, this.renderValueInput(filter)), _react["default"].createElement("td", null, _react["default"].createElement("div", {
+      }, _react["default"].createElement("td", null, this.renderFieldsDropdown(filter)), _react["default"].createElement("td", null, this.renderOperatorsDropdown(filter)), _react["default"].createElement("td", null, this.renderValueInput(filter)), _react["default"].createElement("td", {
+        className: "text-right"
+      }, _react["default"].createElement("div", {
         className: "btn btn-secondary btn-remove-filter",
         onClick: function onClick() {
           _this3.removeFilter(filter.id);
