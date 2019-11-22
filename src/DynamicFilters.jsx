@@ -10,10 +10,7 @@ class DynamicFilters extends Component {
         };
 
         this.addFilter = this.addFilter.bind(this);
-    }
-
-    componentDidMount() {
-
+        this.updateFilter = this.updateFilter.bind(this);
     }
 
     addFilter() {
@@ -120,6 +117,11 @@ class DynamicFilters extends Component {
     getTypeOfField(field) {
         const { types } = this.props;
         return types[field] ? types[field] : 'text';
+    }
+
+    getCustomValueRendererForField(field) {
+        const { customValueRenderers } = this.props;
+        return customValueRenderers[field] ? customValueRenderers[field] : null;
     }
 
     nextFilterId() {
@@ -232,6 +234,12 @@ class DynamicFilters extends Component {
     }
 
     renderOperatorsDropdown(filter) {
+        const operators = this.getOperatorsForField(filter.field);
+
+        if (!operators.length) {
+            return null;
+        }
+
         return (
             <select
                 value={filter.operator}
@@ -240,7 +248,7 @@ class DynamicFilters extends Component {
                     this.updateFilter(filter.id, {operator: e.target.value})
                 }}
             >
-                { this.getOperatorsForField(filter.field).map((operator) => {
+                { operators.map((operator) => {
                     return (
                         <option
                             key={operator}
@@ -255,6 +263,12 @@ class DynamicFilters extends Component {
     }
 
     renderValueInput(filter) {
+        const renderer = this.getCustomValueRendererForField(filter.field);
+
+        if (renderer) {
+            return renderer(filter, this.updateFilter);
+        }
+
         switch (filter.type) {
             case 'text':
             case 'number':
@@ -314,12 +328,14 @@ DynamicFilters.propTypes = {
     values: PropTypes.objectOf(PropTypes.PropTypes.objectOf(PropTypes.string)),
     types: PropTypes.objectOf(PropTypes.PropTypes.string),
     onChange: PropTypes.func,
+    customValueRenders: PropTypes.objectOf(PropTypes.func),
 };
 
 DynamicFilters.defaultProps = {
     operators: {},
     values: {},
     types: {},
+    customValueRenders: {},
     onChange: () => {},
 };
 

@@ -76,13 +76,11 @@ function (_Component) {
       filters: []
     };
     _this.addFilter = _this.addFilter.bind(_assertThisInitialized(_this));
+    _this.updateFilter = _this.updateFilter.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(DynamicFilters, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {}
-  }, {
     key: "addFilter",
     value: function addFilter() {
       var _this2 = this;
@@ -211,6 +209,12 @@ function (_Component) {
       return types[field] ? types[field] : 'text';
     }
   }, {
+    key: "getCustomValueRendererForField",
+    value: function getCustomValueRendererForField(field) {
+      var customValueRenderers = this.props.customValueRenderers;
+      return customValueRenderers[field] ? customValueRenderers[field] : null;
+    }
+  }, {
     key: "nextFilterId",
     value: function nextFilterId() {
       var filters = this.state.filters;
@@ -301,6 +305,12 @@ function (_Component) {
     value: function renderOperatorsDropdown(filter) {
       var _this8 = this;
 
+      var operators = this.getOperatorsForField(filter.field);
+
+      if (!operators.length) {
+        return null;
+      }
+
       return _react["default"].createElement("select", {
         value: filter.operator,
         className: "form-control",
@@ -309,7 +319,7 @@ function (_Component) {
             operator: e.target.value
           });
         }
-      }, this.getOperatorsForField(filter.field).map(function (operator) {
+      }, operators.map(function (operator) {
         return _react["default"].createElement("option", {
           key: operator,
           value: operator
@@ -320,6 +330,12 @@ function (_Component) {
     key: "renderValueInput",
     value: function renderValueInput(filter) {
       var _this9 = this;
+
+      var renderer = this.getCustomValueRendererForField(filter.field);
+
+      if (renderer) {
+        return renderer(filter, this.updateFilter);
+      }
 
       switch (filter.type) {
         case 'text':
@@ -375,12 +391,14 @@ DynamicFilters.propTypes = {
   operators: _propTypes["default"].objectOf(_propTypes["default"].arrayOf(_propTypes["default"].string)),
   values: _propTypes["default"].objectOf(_propTypes["default"].PropTypes.objectOf(_propTypes["default"].string)),
   types: _propTypes["default"].objectOf(_propTypes["default"].PropTypes.string),
-  onChange: _propTypes["default"].func
+  onChange: _propTypes["default"].func,
+  customValueRenders: _propTypes["default"].objectOf(_propTypes["default"].func)
 };
 DynamicFilters.defaultProps = {
   operators: {},
   values: {},
   types: {},
+  customValueRenders: {},
   onChange: function onChange() {}
 };
 var _default = DynamicFilters;
