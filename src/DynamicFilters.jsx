@@ -75,7 +75,21 @@ class DynamicFilters extends Component {
 
     getOperatorsForField(field) {
         const { operators } = this.props;
-        return operators[field] ? operators[field] : ['='];
+
+        let defaultOperators = ['contains', 'equals', 'not equals'];
+
+        switch (this.getTypeOfField(field)) {
+            case 'dropdown':
+                defaultOperators = ['equals', 'not equals'];
+                break;
+
+            case 'number':
+            case 'date':
+                defaultOperators = ['equals', 'not equals', '>=', '<=', '>', '<'];
+                break;
+        }
+
+        return operators[field] ? operators[field] : defaultOperators;
     }
 
     getValuesForField(field) {
@@ -222,8 +236,13 @@ class DynamicFilters extends Component {
     renderValueInput(filter) {
         switch (filter.type) {
             case 'text':
+            case 'number':
+            case 'email':
+            case 'url':
+            case 'date':
                 return (
                     <input
+                        type={filter.type}
                         value={filter.value}
                         className={"form-control"}
                         onChange={(e) => {

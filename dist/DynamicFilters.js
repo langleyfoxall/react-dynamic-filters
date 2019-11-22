@@ -152,7 +152,20 @@ function (_Component) {
     key: "getOperatorsForField",
     value: function getOperatorsForField(field) {
       var operators = this.props.operators;
-      return operators[field] ? operators[field] : ['='];
+      var defaultOperators = ['contains', 'equals', 'not equals'];
+
+      switch (this.getTypeOfField(field)) {
+        case 'dropdown':
+          defaultOperators = ['equals', 'not equals'];
+          break;
+
+        case 'number':
+        case 'date':
+          defaultOperators = ['equals', 'not equals', '>=', '<=', '>', '<'];
+          break;
+      }
+
+      return operators[field] ? operators[field] : defaultOperators;
     }
   }, {
     key: "getValuesForField",
@@ -278,7 +291,12 @@ function (_Component) {
 
       switch (filter.type) {
         case 'text':
+        case 'number':
+        case 'email':
+        case 'url':
+        case 'date':
           return _react["default"].createElement("input", {
+            type: filter.type,
             value: filter.value,
             className: "form-control",
             onChange: function onChange(e) {
