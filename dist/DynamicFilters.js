@@ -21,6 +21,8 @@ require("core-js/modules/es6.object.set-prototype-of");
 
 require("core-js/modules/es6.array.map");
 
+require("core-js/modules/es6.object.assign");
+
 require("core-js/modules/web.dom.iterable");
 
 require("core-js/modules/es6.array.iterator");
@@ -28,8 +30,6 @@ require("core-js/modules/es6.array.iterator");
 require("core-js/modules/es6.object.to-string");
 
 require("core-js/modules/es6.object.keys");
-
-require("core-js/modules/es6.object.assign");
 
 require("core-js/modules/es6.function.bind");
 
@@ -87,7 +87,7 @@ function (_Component) {
     value: function addFilter() {
       var fields = this.props.fields;
       var filters = this.state.filters;
-      var field = fields[0];
+      var field = Object.keys(fields)[0];
       filters.push({
         id: this.nextFilterId(),
         field: field,
@@ -161,6 +161,8 @@ function (_Component) {
 
         case 'number':
         case 'date':
+        case 'datetime':
+        case 'time':
           defaultOperators = ['equals', 'not equals', '>=', '<=', '>', '<'];
           break;
       }
@@ -257,11 +259,12 @@ function (_Component) {
             type: _this4.getTypeOfField(field)
           });
         }
-      }, fields.map(function (field) {
+      }, Object.keys(fields).map(function (key) {
+        var value = fields[key];
         return _react["default"].createElement("option", {
-          key: field,
-          value: field
-        }, field);
+          key: key,
+          value: key
+        }, value);
       }));
     }
   }, {
@@ -295,8 +298,16 @@ function (_Component) {
         case 'email':
         case 'url':
         case 'date':
+        case 'datetime':
+        case 'time':
+          var inputType = filter.type;
+
+          if (inputType === 'datetime') {
+            inputType = 'datetime-local';
+          }
+
           return _react["default"].createElement("input", {
-            type: filter.type,
+            type: inputType,
             value: filter.value,
             className: "form-control",
             onChange: function onChange(e) {
@@ -331,7 +342,7 @@ function (_Component) {
 }(_react.Component);
 
 DynamicFilters.propTypes = {
-  fields: _propTypes["default"].arrayOf(_propTypes["default"].string).isRequired,
+  fields: _propTypes["default"].objectOf(_propTypes["default"].PropTypes.objectOf(_propTypes["default"].string)),
   operators: _propTypes["default"].objectOf(_propTypes["default"].arrayOf(_propTypes["default"].string)),
   values: _propTypes["default"].objectOf(_propTypes["default"].PropTypes.objectOf(_propTypes["default"].string)),
   types: _propTypes["default"].objectOf(_propTypes["default"].PropTypes.string),

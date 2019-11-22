@@ -20,7 +20,7 @@ class DynamicFilters extends Component {
         const { fields } = this.props;
         let { filters } = this.state;
 
-        const field = fields[0];
+        const field = Object.keys(fields)[0];
 
         filters.push({
             id: this.nextFilterId(),
@@ -85,6 +85,8 @@ class DynamicFilters extends Component {
 
             case 'number':
             case 'date':
+            case 'datetime':
+            case 'time':
                 defaultOperators = ['equals', 'not equals', '>=', '<=', '>', '<'];
                 break;
         }
@@ -196,13 +198,14 @@ class DynamicFilters extends Component {
 
                 }}
             >
-                { fields.map((field) => {
+                { Object.keys(fields).map((key) => {
+                    const value = fields[key];
                     return (
                         <option
-                            key={field}
-                            value={field}
+                            key={key}
+                            value={key}
                         >
-                            { field }
+                            { value }
                         </option>
                     )
                 })}
@@ -240,9 +243,17 @@ class DynamicFilters extends Component {
             case 'email':
             case 'url':
             case 'date':
+            case 'datetime':
+            case 'time':
+                let inputType = filter.type;
+
+                if (inputType === 'datetime') {
+                    inputType = 'datetime-local';
+                }
+
                 return (
                     <input
-                        type={filter.type}
+                        type={inputType}
                         value={filter.value}
                         className={"form-control"}
                         onChange={(e) => {
@@ -280,7 +291,7 @@ class DynamicFilters extends Component {
 }
 
 DynamicFilters.propTypes = {
-    fields: PropTypes.arrayOf(PropTypes.string).isRequired,
+    fields: PropTypes.objectOf(PropTypes.PropTypes.objectOf(PropTypes.string)),
     operators: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)),
     values: PropTypes.objectOf(PropTypes.PropTypes.objectOf(PropTypes.string)),
     types: PropTypes.objectOf(PropTypes.PropTypes.string),
