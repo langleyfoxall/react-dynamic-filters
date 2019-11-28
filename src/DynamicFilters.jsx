@@ -121,7 +121,7 @@ class DynamicFilters extends Component {
 
     getCustomValueRendererForField(field) {
         const { customValueRenderers } = this.props;
-        return customValueRenderers[field] ? customValueRenderers[field] : null;
+        return customValueRenderers ? customValueRenderers[field] : null;
     }
 
     nextFilterId() {

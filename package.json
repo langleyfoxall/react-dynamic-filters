@@ -1,6 +1,6 @@
 {
   "name": "@langleyfoxall/react-dynamic-filters",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Re-usable React filtering system for use with data tables.",
   "keywords": [
