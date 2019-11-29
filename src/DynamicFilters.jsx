@@ -85,7 +85,8 @@ class DynamicFilters extends Component {
     getDefaultValueForField(field) {
         const fieldValues = this.getValuesForField(field);
         const keys = Object.keys(fieldValues);
-        return keys.length ? fieldValues[keys[0]] : '';
+        return keys.length ? keys[0] : '';
+
     }
 
     getOperatorsForField(field) {
@@ -121,7 +122,7 @@ class DynamicFilters extends Component {
 
     getCustomValueRendererForField(field) {
         const { customValueRenderers } = this.props;
-        return customValueRenderers[field] ? customValueRenderers[field] : null;
+        return customValueRenderers && customValueRenderers[field] ? customValueRenderers[field] : null;
     }
 
     nextFilterId() {
