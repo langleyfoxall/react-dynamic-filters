@@ -173,7 +173,7 @@ function (_Component) {
     value: function getDefaultValueForField(field) {
       var fieldValues = this.getValuesForField(field);
       var keys = Object.keys(fieldValues);
-      return keys.length ? fieldValues[keys[0]] : '';
+      return keys.length ? keys[0] : '';
     }
   }, {
     key: "getOperatorsForField",
