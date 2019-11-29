@@ -212,7 +212,7 @@ function (_Component) {
     key: "getCustomValueRendererForField",
     value: function getCustomValueRendererForField(field) {
       var customValueRenderers = this.props.customValueRenderers;
-      return customValueRenderers ? customValueRenderers[field] : null;
+      return customValueRenderers && customValueRenderers[field] ? customValueRenderers[field] : null;
     }
   }, {
     key: "nextFilterId",
