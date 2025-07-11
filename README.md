@@ -1,7 +1,5 @@
 # React Dynamic Filters
 
-Note: This is currently a private package.
-
 ## Installation
 
 To install React Dynamic Filters, add the following to the
